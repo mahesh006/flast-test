@@ -6,7 +6,8 @@ import base64
 
 app = Flask(__name__)
 app.secret_key = "secret_key"
-app.config['UPLOAD_FOLDER'] = '/uploads'
+app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'uploads')
+
 
 
 # Configure your Firebase credentials
@@ -79,8 +80,7 @@ def handle_data():
 
     # Create a directory to store the images
     dir_path = os.path.join(app.config['UPLOAD_FOLDER'], file_name)
-    if not os.path.exists(dir_path):
-        os.makedirs(dir_path)
+    os.makedirs(dir_path, exist_ok=True)
 
     # For each base64 string, decode it into an image and save it to the directory
     for i, image_base64 in enumerate(image_base64s):
