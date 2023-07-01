@@ -186,39 +186,33 @@ modalUploadBtn.onclick = function () {
     contentType: "application/json;charset=UTF-8",
     data: JSON.stringify(data),
     success: function (response) {
-  
+      console.log(response);
 
       // Remove images from preview slider
       previewSlider.innerHTML = "";
-    
+
       // Remove loading icon and show success message when the response is received
       document.body.removeChild(loadingIcon);
       document.body.appendChild(successPopup);
       setTimeout(function () {
         document.body.removeChild(successPopup);
       }, 3000); // Success message disappears after 3 seconds
-    
+
+      cropper.destroy();
+      image.src = "";
+      options.classList.add("hide");
+      video.classList.remove("hide");
+      cameraIcon.classList.remove("hide");
+      uploadIcon.classList.add("hide");
+      imageIcon.classList.add("hide");
       // Re-check the state of the preview slider
       checkPreviewSlider();
-      cameraIcon.classList.remove("hide");
-      cropper.destroy();
-      video.classList.remove("hide");
-
-      if (video.srcObject) {
-        video.srcObject.getTracks().forEach((track) => track.stop());
-      }
-
-    
-      // Re-initialize the camera
-      navigator.mediaDevices
-        .getUserMedia({ video: { facingMode: "environment" } }) // Use back camera
-        .then(function (stream) {
-          video.srcObject = stream;
-        })
-        .catch(function (err) {
-          console.log("Something went wrong!");
-        });
     },
+    error: function (error) {
+      console.log(error);
 
+      // If an error occurs, still remove the loading icon
+      document.body.removeChild(loadingIcon);
+    },   
   });
 };
