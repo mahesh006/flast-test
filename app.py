@@ -50,7 +50,7 @@ def login():
             user = auth.sign_in_with_email_and_password(email, password)
             session['email'] = email
             session['user_token'] = user['idToken']  # Save the idToken into the session
-            return redirect('/')
+            return redirect('/home')
         except Exception as e:
             error = str(e)
             return render_template('login.html', error=error)
@@ -58,7 +58,7 @@ def login():
 
 
 
-@app.route('/')
+@app.route('/home')
 def home():
     if 'email' in session:         
         return render_template('index.html')
