@@ -188,29 +188,37 @@ modalUploadBtn.onclick = function () {
     success: function (response) {
   
 
-  // Remove images from preview slider
-  previewSlider.innerHTML = "";
+      // Remove images from preview slider
+      previewSlider.innerHTML = "";
+    
+      // Remove loading icon and show success message when the response is received
+      document.body.removeChild(loadingIcon);
+      document.body.appendChild(successPopup);
+      setTimeout(function () {
+        document.body.removeChild(successPopup);
+      }, 3000); // Success message disappears after 3 seconds
+    
+      // Re-check the state of the preview slider
+      checkPreviewSlider();
+      cameraIcon.classList.remove("hide");
+      cropper.destroy();
+      video.classList.remove("hide");
 
-  // Remove loading icon and show success message when the response is received
-  document.body.removeChild(loadingIcon);
-  document.body.appendChild(successPopup);
-  setTimeout(function () {
-    document.body.removeChild(successPopup);
-  }, 3000); // Success message disappears after 3 seconds
+      if (video.srcObject) {
+        video.srcObject.getTracks().forEach((track) => track.stop());
+      }
 
-  // Re-check the state of the preview slider
-  checkPreviewSlider();
-
-  // Re-initialize the camera
-  navigator.mediaDevices
-    .getUserMedia({ video: { facingMode: "environment" } }) // Use back camera
-    .then(function (stream) {
-      video.srcObject = stream;
-    })
-    .catch(function (err) {
-      console.log("Something went wrong!");
-    });
-},
+    
+      // Re-initialize the camera
+      navigator.mediaDevices
+        .getUserMedia({ video: { facingMode: "environment" } }) // Use back camera
+        .then(function (stream) {
+          video.srcObject = stream;
+        })
+        .catch(function (err) {
+          console.log("Something went wrong!");
+        });
+    },
 
   });
 };
