@@ -109,9 +109,9 @@ def handle_data():
 
 
 
-@app.route('/service-worker.js')
-def sw():
-    return app.send_static_file('service-worker.js')
+#@app.route('/service-worker.js')
+#def sw():
+    #return app.send_static_file('service-worker.js')
 
 
 
